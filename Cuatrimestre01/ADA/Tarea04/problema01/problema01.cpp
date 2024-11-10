@@ -1,7 +1,9 @@
 /*****************************************
  ***Algoritmo: Intersección de Segmentos de Línea con Fuerza Bruta
- ***Tipo: Teoria de Grafos
  ***Autor: Diego Guadalupe Rodriguez Prieto
+ ***Referencias:
+                [1]  https://www.geeksforgeeks.org/how-to-create-vector-of-pairs-in-cpp/
+                [2]  https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
  ******************************************/
 
 #include <iostream>
