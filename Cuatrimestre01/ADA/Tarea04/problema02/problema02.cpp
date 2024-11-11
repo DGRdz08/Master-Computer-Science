@@ -5,7 +5,7 @@
  ***Referencias: 
  ***            [1] https://github.com/jariasf/Online-Judges-Solutions/blob/master/Algorithms/C%2B%2B/Graph%20Theory/Algoritmo%20DFS%20usando%20Recursion.cpp
  ******************************************/
-#include <stdio.h>
+#include <iostream>
 #include <cstring>
 #include <vector>
 #include <tuple>

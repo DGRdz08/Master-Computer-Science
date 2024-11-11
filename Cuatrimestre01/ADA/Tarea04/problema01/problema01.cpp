@@ -4,11 +4,14 @@
  ***Referencias:
                 [1]  https://www.geeksforgeeks.org/how-to-create-vector-of-pairs-in-cpp/
                 [2]  https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
+                [3]  https://es.stackoverflow.com/questions/155475/imprimir-decimales-en-c
  ******************************************/
 
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <ctime>
+#include <iomanip>
 
 struct Point {
     int x;
@@ -47,20 +50,20 @@ bool doIntersect(const Point& p1, const Point& q1, const Point& p2, const Point&
         float b2 = p2.x - q2.x;
         float c2 = a2 * p2.x + b2 * p2.y;
 
-        float determinant = a1 * b2 - a2 * b1;
+        float determinant = a1 * b2 - a2 * b1; 
 
         if (determinant != 0) { // Si los segmentos no son paralelos
-            intersection.x = static_cast<int>((c1 * b2 - c2 * b1) / determinant);
-            intersection.y = static_cast<int>((a1 * c2 - a2 * c1) / determinant);
+            intersection.x = static_cast<int>((c1 * b2 - c2 * b1) / determinant); 
+            intersection.y = static_cast<int>((a1 * c2 - a2 * c1) / determinant); 
             return true;
         }
     }
 
     // Casos especiales
-    if (o1 == 0 && onSegment(p1, p2, q1)) { intersection = p2; return true; }
-    if (o2 == 0 && onSegment(p1, q2, q1)) { intersection = q2; return true; }
-    if (o3 == 0 && onSegment(p2, p1, q2)) { intersection = p1; return true; }
-    if (o4 == 0 && onSegment(p2, q1, q2)) { intersection = q1; return true; }
+    if (o1 == 0 && onSegment(p1, p2, q1)) { intersection = p2; return true; } // p1, q1 y p2 son colineales
+    if (o2 == 0 && onSegment(p1, q2, q1)) { intersection = q2; return true; } // p1, q1 y q2 son colineales
+    if (o3 == 0 && onSegment(p2, p1, q2)) { intersection = p1; return true; } // p2, q2 y p1 son colineales
+    if (o4 == 0 && onSegment(p2, q1, q2)) { intersection = q1; return true; } // p2, q2 y q1 son colineales
 
     return false; // No hay intersección
 }
@@ -68,9 +71,9 @@ bool doIntersect(const Point& p1, const Point& q1, const Point& p2, const Point&
 int main() {
     int n;
     std::cin >> n;  // Número de segmentos
-
     std::vector<std::pair<Point, Point>> segments(n);
-    
+    clock_t start_time = clock();
+
     // Lectura de segmentos desde la entrada estándar
     for (int i = 0; i < n; ++i) {
         std::cin >> segments[i].first.x >> segments[i].first.y
@@ -95,6 +98,10 @@ int main() {
     for (const auto& pt : intersections) {
         std::cout << pt.x << " " << pt.y << "\n";
     }
+    clock_t end_time = clock();
+    double execution_time = double(end_time - start_time) / CLOCKS_PER_SEC;
 
+    std::cout << std::endl;
+    std::cout << "Tiempo de ejecución: " << std::fixed << std::setprecision(11) << execution_time << " segundos" << std::endl;
     return 0;
 }
