@@ -14,8 +14,8 @@ else:
 
     # Bucle para ejecutar el código con cada instancia
     for i in range(1, num_pruebas + 1):
-        archivo_entrada = f"instancias100/prueba{i}.txt"
-        archivo_salida = f"instancias100/salidas/salida{i}.txt"
+        archivo_entrada = f"instancias400/prueba{i}.txt"
+        archivo_salida = f"instancias400/salidas/salida{i}.txt"
 
         # Ejecuta el programa con la entrada y redirige la salida al archivo correspondiente
         with open(archivo_salida, "w") as salida:

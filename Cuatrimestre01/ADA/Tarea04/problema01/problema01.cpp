@@ -95,13 +95,13 @@ int main() {
 
     // Escritura del resultado en la salida estándar
     std::cout << intersections.size() << "\n";
-    for (const auto& pt : intersections) {
+    /*for (const auto& pt : intersections) {
         std::cout << pt.x << " " << pt.y << "\n";
-    }
+    }*/
     clock_t end_time = clock();
     double execution_time = double(end_time - start_time) / CLOCKS_PER_SEC;
 
     std::cout << std::endl;
-    std::cout << "Tiempo de ejecución: " << std::fixed << std::setprecision(11) << execution_time << " segundos" << std::endl;
+    std::cout << "Tiempo de ejecucion: " << std::fixed << std::setprecision(11) << execution_time << " segundos" << std::endl;
     return 0;
 }
