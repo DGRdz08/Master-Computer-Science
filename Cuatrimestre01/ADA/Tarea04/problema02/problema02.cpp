@@ -1,102 +1,95 @@
 /*****************************************
- 
  ***Algoritmo: Depth First Search Recursivo
  ***Autor: Diego Guadalupe Rodriguez Prieto
  ***Referencias: 
  ***            [1] https://github.com/jariasf/Online-Judges-Solutions/blob/master/Algorithms/C%2B%2B/Graph%20Theory/Algoritmo%20DFS%20usando%20Recursion.cpp
  ******************************************/
 #include <iostream>
-#include <cstring>
 #include <vector>
-#include <tuple>
-#include <ctime>
+#include <algorithm>
 
-#define MAX 500 // Número de vértices
-std::vector<std::tuple<int, int>> ady[MAX];  //lista de adyacencia (destino, peso)
-bool visitado[MAX];    //para nodos visitados
-int V;
-int path[MAX];         //para guardar el path actual
-int maxPath[MAX];      //para guardar el path más largo encontrado
-int maxLen = -1;       //longitud del path más largo
-int maxDistance = -1;  //distancia máxima encontrada
+#define MAX 500
 
-void dfs_longest_path(int u, int fin, int len, int currentDistance) {
+struct Edge {
+    int destino;
+    int peso;
+};
+
+std::vector<Edge> ady[MAX]; //lista de adyacencia con pesos
+bool visitado[MAX];        //para nodos visitados
+int V;                    //número de vértices
+int path[MAX];           //para guardar el path actual
+int bestPath[MAX];      //para guardar el mejor path
+int maxDist;           //distancia máxima encontrada
+int currentDist;      //distancia actual del recorrido
+int bestLen;         //longitud del mejor camino
+bool first;         //para formato de impresión
+
+///Ver la ruta más larga usando DFS y backtracking
+void dfs_longest(int u, int len) {
     visitado[u] = true;
-    path[len] = u;  // Almaceno el vértice actual en el path
+    path[len] = u;                    //almaceno en el path el vertice actual
 
-    if(u == fin) {
-        if(currentDistance > maxDistance) {
-            maxDistance = currentDistance;
-            maxLen = len;
-            // Guardar el path actual como el mejor path
-            for(int i = 0; i <= len; i++) {
-                maxPath[i] = path[i];
-            }
+    //Si encontramos un camino más largo, actualizamos
+    if(currentDist > maxDist) {
+        maxDist = currentDist;
+        bestLen = len;
+        for(int i = 0; i <= len; i++) {
+            bestPath[i] = path[i];
         }
-        return;
     }
 
-    // Recorrer adyacentes como en tu código original
-    for(int i = 0; i < ady[u].size(); ++i) {
-        auto [v, weight] = ady[u][i];
+    //Exploramos todos los vecinos
+    for(size_t i = 0; i < ady[u].size(); i++) {
+        int v = ady[u][i].destino;
         if(!visitado[v]) {
-            dfs_longest_path(v, fin, len + 1, currentDistance + weight);
-            visitado[v] = false;  // Backtracking como en tu código
+            currentDist += ady[u][i].peso;           //agregamos el peso de la arista
+            dfs_longest(v, len + 1);
+            currentDist -= ady[u][i].peso;           //backtracking: quitamos el peso
+            visitado[v] = false;                     //marcamos como no visitado para otros caminos
         }
     }
 }
 
 int main() {
     int E, x, y, w;
-    scanf("%d %d", &V, &E);
-
-    for(int i = 0; i < E; ++i) {
-        scanf("%d %d %d", &x, &y, &w);
-        ady[x].push_back(std::make_tuple(y, w));
-        ady[y].push_back(std::make_tuple(x, w));
+    
+    std::cin >> V >> E;                    //Número de vértices y aristas
+    
+    //Lectura del grafo
+    for(int i = 0; i < E; i++) {
+        std::cin >> x >> y >> w;           //Origen, destino y peso
+        ady[x].push_back({y, w});     //Solo agregamos en una dirección (grafo dirigido)
     }
 
-    // Variables para guardar la ruta más larga global
-    int globalMaxDistance = -1;
-    int globalMaxPath[MAX];
-    int globalMaxLen = -1;
-    int start_vertex = -1, end_vertex = -1;
-    
-    clock_t start_time = clock();
+    //Inicialización de variables
+    maxDist = 0;
+    currentDist = 0;
+    bestLen = 0;
 
-    // Probar todas las combinaciones de vértices
+    //Probamos desde cada vértice como inicial
     for(int i = 0; i < V; i++) {
-        for(int j = i + 1; j < V; j++) {
-            memset(visitado, 0, sizeof(visitado));
-            maxDistance = -1;
-            maxLen = -1;
-            
-            dfs_longest_path(i, j, 0, 0);
-            
-            if(maxDistance > globalMaxDistance) {
-                globalMaxDistance = maxDistance;
-                globalMaxLen = maxLen;
-                for(int k = 0; k <= maxLen; k++) {
-                    globalMaxPath[k] = maxPath[k];
-                }
-                start_vertex = i;
-                end_vertex = j;
-            }
+        for(int j = 0; j < MAX; j++) {
+            visitado[j] = false;  // Marcamos todos los vértices como no visitados
+        }
+        currentDist = 0;  // Reseteamos la distancia actual
+        dfs_longest(i, 0);  // Llamamos a dfs_longest para iniciar la búsqueda desde el vértice i
+    }
+
+
+    //Impresión de resultados
+    std::cout << "La ruta mas larga tiene una distancia total de: " << maxDist << std::endl;
+    std::cout << "La ruta es: ";
+    first = true;
+    for(int i = 0; i <= bestLen; i++) {
+        if(first) {
+            std::cout << bestPath[i];
+            first = false;
+        } else {
+            std::cout << "->" << bestPath[i];
         }
     }
-
-    clock_t end_time = clock();
-    double execution_time = double(end_time - start_time) / CLOCKS_PER_SEC;
-
-    // Imprimir resultados
-    printf("Distancia total de la ruta mas larga: %d\n", globalMaxDistance);
-    printf("Ruta mas larga: ");
-    for(int i = 0; i <= globalMaxLen; i++) {
-        if(i > 0) printf("->");
-        printf("%d", globalMaxPath[i]);
-    }
-    printf("\n");
-    printf("Tiempo de ejecucion: %.8f segundos\n", execution_time);
+    std::cout << std::endl;
 
     return 0;
 }
