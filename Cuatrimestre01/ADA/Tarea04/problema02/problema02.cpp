@@ -78,8 +78,8 @@ int main() {
 
 
     //Impresión de resultados
-    std::cout << "La ruta mas larga tiene una distancia total de: " << maxDist << std::endl;
-    std::cout << "La ruta es: ";
+    std::cout << "Distancia total: " << maxDist << std::endl;
+    std::cout << "Ruta: ";
     first = true;
     for(int i = 0; i <= bestLen; i++) {
         if(first) {
