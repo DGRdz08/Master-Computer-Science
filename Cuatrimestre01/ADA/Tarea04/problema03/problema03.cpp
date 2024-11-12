@@ -48,7 +48,7 @@ int main() {
     // Leer las aristas
     for(int i = 0; i < E; ++i) {
         std::cin >> x >> y;   // Origen y destino
-        ady[x].push_back(y);
+        ady[x].push_back(y);        // Por ser grafo no dirigido
         ady[y].push_back(x);      // Por ser grafo no dirigido
     }
 
