@@ -10,3 +10,5 @@ prog < instancias[i]\pruebas\prueba[i] > instancias[i]\pruebas\salidas\saida[i]
 g++ problema01 -o prog
 prog < instancias[i]/pruebas/prueba[i] > instancias[i]/pruebas/salidas/saida[i]
 
+
+donde la i se cambiará por numeros del 1 al 10

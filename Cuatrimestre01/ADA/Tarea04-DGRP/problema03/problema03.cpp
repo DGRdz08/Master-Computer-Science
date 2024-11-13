@@ -1,11 +1,18 @@
+/*****************************************
+ ***Algoritmo: BFS para detectar bipartitas
+ ***Autor: Diego Guadalupe Rodriguez Prieto
+ ***Referencias: 
+ ***            [1] //https://www.geeksforgeeks.org/bipartite-graph/
+ ******************************************/
+
 #include <iostream>
 #include <vector>
 #include <queue>
 #include <ctime>
 
 #define MAX 500
-std::vector<int> ady[MAX];  // Lista de adyacencia
-std::vector<int> color;     // Vector de colores (-1: sin color, 0: primer color, 1: segundo color)
+std::vector<int> ady[MAX];  // lista de adyacencia
+std::vector<int> color;     // vector de colores (-1: sin color, 0: primer color, 1: segundo color)
 int V;
 
 bool isBipartite() {
@@ -37,34 +44,33 @@ bool isBipartite() {
             }
         }
     }
-    
     return true;  // Si llegamos aquí, el grafo es bipartito
 }
 
 int main() {
-    int E, x, y, dir;
-    //std::cout << "Ingrese el número de vértices, aristas y 1 si es dirigido o 0 si es no dirigido: ";
-    std::cin >> V >> E >> dir; // Número de vértices, aristas y si es dirigido (1) o no dirigido (0)
+    int E, x, y, dir; // dir = 0: no dirigido, dir = 1:  dirigido
+    std::cin >> dir;
+    std::cin >> V >> E;      // Número de vértices y aristas
 
     // Leer las aristas
     for(int i = 0; i < E; ++i) {
         std::cin >> x >> y;   // Origen y destino
-        ady[x].push_back(y);   // Agregar arista desde x a y
         if (dir == 0) {
-            ady[y].push_back(x); // Si no es dirigido, agregar también la arista desde y a x
+            ady[x].push_back(y);
+            ady[y].push_back(x);
+        } else {
+            ady[x].push_back(y);
         }
     }
 
     clock_t start_time = clock();
-    
     bool result = isBipartite();
-    
     clock_t end_time = clock();
+
     double execution_time = double(end_time - start_time) / CLOCKS_PER_SEC;
 
     // Imprimir resultado
     std::cout << (result ? "Bipartita" : "No bipartita") << std::endl;
     std::cout << "Tiempo de ejecución: " << execution_time << " segundos" << std::endl;
-
     return 0;
 }
