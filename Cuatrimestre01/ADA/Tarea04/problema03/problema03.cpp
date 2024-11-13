@@ -50,11 +50,10 @@ int main() {
         std::cin >> x >> y;   // Origen y destino
         if (dir == 0){
             ady[x].push_back(y);
-            ady[y].push_back(x);
-        
+            ady[y].push_back(x); // Agregar aristas no dirigidas
         }
         else{
-            ady[x].push_back(y);
+            ady[x].push_back(y); // Agregar arista dirigida
         }
     }
 

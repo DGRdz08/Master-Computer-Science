@@ -42,13 +42,17 @@ bool isBipartite() {
 }
 
 int main() {
-    int E, x, y;
-    std::cin >> V >> E;      // Número de vértices y aristas
+    int E, x, y, dir;
+    //std::cout << "Ingrese el número de vértices, aristas y 1 si es dirigido o 0 si es no dirigido: ";
+    std::cin >> V >> E >> dir; // Número de vértices, aristas y si es dirigido (1) o no dirigido (0)
 
     // Leer las aristas
     for(int i = 0; i < E; ++i) {
         std::cin >> x >> y;   // Origen y destino
-        ady[x].push_back(y);  // Solo agregamos la arista en una dirección
+        ady[x].push_back(y);   // Agregar arista desde x a y
+        if (dir == 0) {
+            ady[y].push_back(x); // Si no es dirigido, agregar también la arista desde y a x
+        }
     }
 
     clock_t start_time = clock();
