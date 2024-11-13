@@ -42,14 +42,20 @@ bool isBipartite() {
 }
 
 int main() {
-    int E, x, y;
-    std::cin >> V >> E;      // Número de vértices y aristas
+    int E, x, y, dir; // dir = 0: no dirigido, dir = 1: dirigido
+    std::cin >> V >> E >> dir;      // Número de vértices y aristas
 
     // Leer las aristas
     for(int i = 0; i < E; ++i) {
         std::cin >> x >> y;   // Origen y destino
-        ady[x].push_back(y);        // Por ser grafo no dirigido
-        ady[y].push_back(x);      // Por ser grafo no dirigido
+        if (dir == 0){
+            ady[x].push_back(y);
+            ady[y].push_back(x);
+        
+        }
+        else{
+            ady[x].push_back(y);
+        }
     }
 
     clock_t start_time = clock();

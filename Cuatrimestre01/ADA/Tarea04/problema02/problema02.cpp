@@ -8,7 +8,7 @@
 #include <vector>
 #include <algorithm>
 
-#define MAX 500
+#define MAX 500 //número máximo de vertices
 
 struct Edge {
     int destino;
@@ -28,7 +28,7 @@ bool first;         //para formato de impresión
 ///Ver la ruta más larga usando DFS y backtracking
 void dfs_longest(int u, int len) {
     visitado[u] = true;
-    path[len] = u;                    //almaceno en el path el vertice actual
+    path[len] = u;    //almaceno en el path el vertice actual
 
     //Si encontramos un camino más largo, actualizamos
     if(currentDist > maxDist) {
@@ -63,8 +63,8 @@ int main() {
     }
 
     //Inicialización de variables
-    maxDist = 0;
-    currentDist = 0;
+    maxDist = 0; //valor de la distancia mAúxima encontrada en el recorrido
+    currentDist = 0; //distancia actual 
     bestLen = 0;
 
     //Probamos desde cada vértice como inicial
@@ -73,14 +73,14 @@ int main() {
             visitado[j] = false;  // Marcamos todos los vértices como no visitados
         }
         currentDist = 0;  // Reseteamos la distancia actual
-        dfs_longest(i, 0);  // Llamamos a dfs_longest para iniciar la búsqueda desde el vértice i
+        dfs_longest(i, 0);  // Llamamos a dfs_longest para iniciar la búsqueda desde el vértice i y la longitud 0, siendo 0 el origen
     }
 
 
     //Impresión de resultados
     std::cout << "Distancia total: " << maxDist << std::endl;
     std::cout << "Ruta: ";
-    first = true;
+    first = true; //
     for(int i = 0; i <= bestLen; i++) {
         if(first) {
             std::cout << bestPath[i];

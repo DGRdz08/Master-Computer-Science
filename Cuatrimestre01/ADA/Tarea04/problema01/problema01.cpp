@@ -21,7 +21,7 @@ struct Point {
 // Dado tres puntos colineales p, q, r, verifica si q está en el segmento 'pr'
 bool onSegment(const Point& p, const Point& q, const Point& r) {
     return q.x <= std::max(p.x, r.x) && q.x >= std::min(p.x, r.x) &&
-           q.y <= std::max(p.y, r.y) && q.y >= std::min(p.y, r.y);
+           q.y <= std::max(p.y, r.y) && q.y >= std::min(p.y, r.y); // Verifica si q se encuentra en el segmento 'pr'
 }
 
 // Calcula la orientación de tres puntos (p, q, r)
@@ -53,7 +53,7 @@ bool doIntersect(const Point& p1, const Point& q1, const Point& p2, const Point&
         float determinant = a1 * b2 - a2 * b1; 
 
         if (determinant != 0) { // Si los segmentos no son paralelos
-            intersection.x = static_cast<int>((c1 * b2 - c2 * b1) / determinant); 
+            intersection.x = static_cast<int>((c1 * b2 - c2 * b1) / determinant); // Cálculo del punto de intersección
             intersection.y = static_cast<int>((a1 * c2 - a2 * c1) / determinant); 
             return true;
         }
@@ -92,13 +92,12 @@ int main() {
             }
         }
     }
-
+    clock_t end_time = clock();
     // Escritura del resultado en la salida estándar
     std::cout << intersections.size() << "\n";
-    /*for (const auto& pt : intersections) {
+    for (const auto& pt : intersections) 
         std::cout << pt.x << " " << pt.y << "\n";
-    }*/
-    clock_t end_time = clock();
+
     double execution_time = double(end_time - start_time) / CLOCKS_PER_SEC;
 
     std::cout << std::endl;

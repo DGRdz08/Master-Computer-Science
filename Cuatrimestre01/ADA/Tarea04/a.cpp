@@ -11,7 +11,7 @@ int V;
 bool isBipartite() {
     std::queue<int> q;
     color.assign(V, -1);  // Inicializar todos los vértices como no coloreados
-
+    
     // Para manejar grafos desconectados, intentamos desde cada vértice no visitado
     for(int start = 0; start < V; start++) {
         if(color[start] == -1) {  // Si el vértice no ha sido coloreado
@@ -48,8 +48,7 @@ int main() {
     // Leer las aristas
     for(int i = 0; i < E; ++i) {
         std::cin >> x >> y;   // Origen y destino
-        ady[x].push_back(y);  // Añadir arista original
-        ady[y].push_back(x);  // Añadir arista inversa para simular grafo no dirigido
+        ady[x].push_back(y);  // Solo agregamos la arista en una dirección
     }
 
     clock_t start_time = clock();
