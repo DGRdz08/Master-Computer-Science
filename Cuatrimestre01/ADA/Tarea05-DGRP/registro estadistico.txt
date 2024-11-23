@@ -1,0 +1,14 @@
+hoare-quicksort
+
+swaps
+|   Prueba    |   1   |   2   |   3   |   4   |   5   |   6   |   7   |   8   |   9   |   10  |
+|   Cantidad  |   1   |   2   |   3   |   4   |   5   |   6   |   7   |   8   |   9   |   10  |
+
+Comparaciones
+|   Prueba    |   1   |   2   |   3   |   4   |   5   |   6   |   7   |   8   |   9   |   10  |
+|   Cantidad  |   1   |   2   |   3   |   4   |   5   |   6   |   7   |   8   |   9   |   10  |
+
+
+Tiempo
+|   Prueba    |   1   |   2   |   3   |   4   |   5   |   6   |   7   |   8   |   9   |   10  |
+|   Cantidad  |   1   |   2   |   3   |   4   |   5   |   6   |   7   |   8   |   9   |   10  |
