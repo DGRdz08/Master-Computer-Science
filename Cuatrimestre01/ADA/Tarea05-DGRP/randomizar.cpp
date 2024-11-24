@@ -34,20 +34,20 @@ int LCG(int seed, int m, int a, int c) {
 
 int main(int argc, char const *argv[]) {
     // Configurar los valores del rango y otros parámetros
-    int L = 1, U = 100; // L: límite inferior, U: límite superior
+    int L = 1, U = 1000; // L: límite inferior, U: límite superior
 
     // Parámetros para el GLC
-    int m = 101; // Debe ser un número primo grande o potencia de 2
-    int a = 17;  // Multiplicador (relativamente primo a m)
-    int c = 43;  // Incremento (impar y pequeño)
+    int m = 2147483647; // Debe ser un número primo grande o potencia de 2
+    int a = 48271;  // Multiplicador (relativamente primo a m)
+    int c = 0;  // Incremento (impar y pequeño)
     int seed = time(NULL) % m; // Semilla inicial basada en el tiempo actual
 
     int n=10000000; // Cantidad de números pseudoaleatorios
 
     //generar 10 archivos
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1; i++) {
         std::ofstream archivo;
-        std::string filename = "random" + std::to_string(i + 1) + ".txt";
+        std::string filename = "prueba" + std::to_string(i + 5) + ".txt";
         archivo.open(filename);
         
         archivo<< n << std::endl;        

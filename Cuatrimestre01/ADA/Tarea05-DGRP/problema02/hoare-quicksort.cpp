@@ -83,7 +83,8 @@ int main()
             std::cin >> arr[i];
 
         quickSort(arr, 0, n-1);
-        std::cout << "Total de swaps:"<< count_swap << std::endl;
+        std::cout << "Hoare Quicksort: \n";
+        std::cout << "Total de swaps: "<< count_swap << std::endl;
         std::cout << "Total de comparaciones: " << count_comp << std::endl;    
          clock_t end_time = clock();
         double execution_time = double(end_time - start_time) / CLOCKS_PER_SEC;

@@ -1,4 +1,4 @@
-//quick sort
+//Quick sort
 
 #include <iostream>
 #include <vector>
@@ -23,10 +23,10 @@ int partition(std::vector<int>& A, int low, int high) {
         {
             count_comp++;
             i += 1;
-            std::swap(A[i], A[j]);
+            swap(&A[i], &A[j]);
         }
     }
-    std::swap(A[i + 1], A[high]);
+    swap(&A[i + 1], &A[high]);
     return i + 1;
 }
 
@@ -52,14 +52,16 @@ int main() {
     
     quickSort(arr, 0, n-1);
 
-    std::cout << "Total de swaps:"<< count_swap << std::endl;
+    std::cout << "QuickSort" << std::endl;
+    std::cout << "Total de swaps: "<< count_swap << std::endl;
 
     clock_t end_time = clock();
     
     double execution_time = double(end_time - start_time) / CLOCKS_PER_SEC;
     
+    std::cout << "Total de comparaciones: " << count_comp << std::endl;    
     std::cout << "Tiempo de ejecucion: " << std::fixed  << execution_time << " segundos" << std::endl;
-    std::cout << "Total de comparaciones: " << count_comp << std::endl;
+
     }catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
