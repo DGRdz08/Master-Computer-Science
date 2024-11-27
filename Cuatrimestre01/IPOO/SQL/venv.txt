@@ -1,0 +1,8 @@
+Para crear el entorno virtual:
+    python -m venv mi_entorno
+
+Para activar el entorno virtual
+    source mi_entorno/bin/activate
+
+Para desactivar el entorno virtual
+    deactivate
