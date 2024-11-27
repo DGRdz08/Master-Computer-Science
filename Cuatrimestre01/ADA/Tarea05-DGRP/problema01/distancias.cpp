@@ -40,8 +40,6 @@ void quickSort(std::vector<int>& A, int low, int high) {
     }
 }
 
-
-
 // Estructura para representar una instalación peligrosa
 struct Installation {
     std::string name;
