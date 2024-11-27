@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  preprocessor:
+    build:
+      context: ./container1
+    volumes:
+      - shared_memory:/shared_memory
+    # Asegura que el directorio de shared_memory exista
+    entrypoint: sh -c "mkdir -p /shared_memory && /app/LCG"
+
+  processor:
+    build:
+      context: ./container2
+    volumes:
+      - shared_memory:/shared_memory
+    depends_on:
+      - preprocessor
+    # Añade un retraso y verificación de archivo
+    entrypoint: sh -c "sleep 5 && test -f /shared_memory/datos.txt && /app/promedio < /shared_memory/datos.txt"
+
+volumes:
+  shared_memory:
+    driver: local

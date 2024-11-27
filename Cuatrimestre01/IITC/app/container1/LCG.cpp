@@ -27,8 +27,6 @@ int random (int m, int a, int c){
 #include <cstdlib>
 #include <fstream>
 #include <cmath>
-#include <chrono>
-#include <thread>
 
 int LCG(int seed, int m, int a, int c) {
     return (a * seed + c) % m;
@@ -41,15 +39,18 @@ int main() {
     int n = 1000;
 
     std::ofstream archivo("/shared_memory/datos.txt");
-    archivo << n << std::endl;
+    if (!archivo.is_open()) {
+        std::cerr << "Error al crear el archivo\n";
+        return 1;
+    }
 
+    archivo << n << std::endl;
     for (int i = 0; i < n; i++) {
         seed = std::abs(LCG(seed, m, a, c));
         int randomNumber = L + seed % (U - L + 1);
         archivo << randomNumber << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
-
+    
     archivo.close();
     return 0;
 }

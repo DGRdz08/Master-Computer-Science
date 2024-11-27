@@ -1,6 +1,0 @@
-5
-Spark 5 10
-Rocket 2 30
-Atomic 1 15
-Nicotine 10 2
-Nerea 20 5

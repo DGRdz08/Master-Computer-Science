@@ -88,6 +88,7 @@ int main()
         std::cout << "Total de comparaciones: " << count_comp << std::endl;    
          clock_t end_time = clock();
         double execution_time = double(end_time - start_time) / CLOCKS_PER_SEC;
+        
         std::cout << "Tiempo de ejecucion: " << std::fixed  << execution_time << " segundos" << std::endl;
     }
     catch(const std::exception& e)

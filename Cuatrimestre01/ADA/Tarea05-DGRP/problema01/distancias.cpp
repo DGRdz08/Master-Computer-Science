@@ -5,8 +5,42 @@
 #include <algorithm>
 #include <iomanip> 
 #include <float.h> 
+#include<ctime>
 
 //https://itzsyboo.medium.com/algorithms-studynote-4-divide-and-conquer-closest-pair-49ba679ce3c7
+int count_op = 0;
+
+void swap(int* a, int* b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+int partition(std::vector<int>& A, int low, int high) {
+    int pivot = A[high];
+    int i = low - 1;
+    int temp;
+    for (int j = low; j < high; ++j)
+    {
+        if (A[j] < pivot)
+        {
+            i += 1;
+            swap(&A[i], &A[j]);
+        }
+    }
+    swap(&A[i + 1], &A[high]);
+    return i + 1;
+}
+
+void quickSort(std::vector<int>& A, int low, int high) {
+    if(low < high){
+        // pi es el indice de la particion, A[pi] est en su lugar correcto
+        int pi = partition (A, low, high);
+        quickSort(A, low, pi - 1); 
+        quickSort(A, pi + 1, high);
+    }
+}
+
+
 
 // Estructura para representar una instalación peligrosa
 struct Installation {
@@ -20,13 +54,67 @@ float dist(const Installation& a, const Installation& b) {
 }
 
 // Función para ordenar según coordenadas X
+/*
+tomando dos instalaciones a y b, si la coordenada a.x es menor que 
+b.x y se devuelve true, o si son iguales se devuelve por true
+al obtener un true se ordenan por Y
+*/
 bool compareX(const Installation& a, const Installation& b) {
-    return (a.x != b.x) ? (a.x < b.x) : (a.y < b.y); // Si las coordenadas X son iguales, ordenar por Y
+    return (a.x != b.x) ? (a.x < b.x) : (a.y < b.y); 
 }
 
-// Función para ordenar según coordenadas Y
+
+// Mismo caso que compareX, pero con coordenadas Y de dos instalaciones a y b
+
 bool compareY(const Installation& a, const Installation& b) {
     return (a.y != b.y) ? (a.y < b.y) : (a.x < b.x); // Si las coordenadas Y son iguales, ordenar por X
+}
+
+int partitionX(std::vector<Installation>& A, int low, int high) {
+    Installation pivot = A[high];
+    int i = low - 1;
+    for (int j = low; j < high; ++j)
+    {
+        if (compareX(A[j], pivot))
+        {
+            i += 1;
+            std::swap(A[i], A[j]);
+        }
+    }
+    std::swap(A[i + 1], A[high]);
+    return i + 1;
+}
+int partitionY(std::vector<Installation>& A, int low, int high) {
+    Installation pivot = A[high];
+    int i = low - 1;
+    for (int j = low; j < high; ++j)
+    {
+        if (compareY(A[j], pivot))
+        {
+            i += 1;
+            std::swap(A[i], A[j]);
+        }
+    }
+    std::swap(A[i + 1], A[high]);
+    return i + 1;
+}
+
+void quickSortX(std::vector<Installation>& A, int low, int high) {
+    if(low < high){
+        // pi es el indice de la particion, A[pi] est en su lugar correcto
+        int pi = partitionX(A, low, high);
+        quickSortX(A, low, pi - 1); 
+        quickSortX(A, pi + 1, high);
+    }
+}
+
+void quickSortY(std::vector<Installation>& A, int low, int high) {
+    if(low < high){
+        // pi es el indice de la particion, A[pi] est en su lugar correcto
+        int pi = partitionY(A, low, high);
+        quickSortY(A, low, pi - 1); 
+        quickSortY(A, pi + 1, high);
+    }
 }
 
 // Función que implementa la solución Divide y Vencerás
@@ -38,7 +126,7 @@ std::pair<std::pair<Installation, Installation>, float> closestUtil(std::vector<
         float minDist = FLT_MAX; // Distancia infinita
         std::pair<Installation, Installation> result; // Par de instalaciones
         for (int i = 0; i < n; ++i) {
-            for (int j = i + 1; j < n; ++j) {
+            for (int j = i + 1; j < n; ++j) {   
                 float d = dist(Px[i], Px[j]);
                 if (d < minDist) {
                     minDist = d;
@@ -80,15 +168,22 @@ std::pair<std::pair<Installation, Installation>, float> closestUtil(std::vector<
     }
 
     // Considerar instalaciones cercanas a la línea divisoria
-    std::vector<Installation> strip;
-    for (auto& p : Py) {
-        if (abs(p.x - midPoint.x) <= minDist)
+    std::vector<Installation> strip; // Instalaciones cercanas a la línea divisoria
+    for (auto& p : Py) 
+        if (abs(p.x - midPoint.x) <= minDist){
             strip.push_back(p);
-    }
+            count_op++;
+        }
 
-    // Revisar el "strip" para encontrar posibles pares más cercanos
+    /* Revisar el "strip" para encontrar posibles pares más cercanos
+    Se toma previamente la raiz cuadrada del tamaño de las instalaciones, 
+    de modo que reduce la cantidad de pares a revisar a solo las 
+    instalaciones en un radiocercanas 
+    */
+    int searchRadius = sqrt(n); 
+
     for (size_t i = 0; i < strip.size(); ++i) {
-        for (size_t j = i + 1; j < std::min(strip.size(), i + 7); ++j) {
+        for (size_t j = i + 1; j < std::min(strip.size(), i + searchRadius); ++j) {
             float d = dist(strip[i], strip[j]);
             if (d < minDist) {
                 minDist = d;
@@ -100,12 +195,14 @@ std::pair<std::pair<Installation, Installation>, float> closestUtil(std::vector<
 }
 
 // Función principal para encontrar el par de instalaciones más cercanas
+// Función principal para encontrar el par de instalaciones más cercanas
 std::pair<std::pair<Installation, Installation>, float> closest(std::vector<Installation>& installations) {
     std::vector<Installation> Px = installations;
     std::vector<Installation> Py = installations;
 
-    sort(Px.begin(), Px.end(), compareX); // Ordenar las instalaciones por coordenadas X
-    sort(Py.begin(), Py.end(), compareY); // Ordenar las instalaciones por coordenadas Y
+    // Usar quickSort en lugar de std::sort
+    quickSortX(Px, 0, Px.size() - 1); // Ordenar las instalaciones por coordenadas X
+    quickSortY(Py, 0, Py.size() - 1); // Ordenar las instalaciones por coordenadas Y
 
     return closestUtil(Px, Py); // Devolver el par de instalaciones más cercanas
 }
@@ -113,14 +210,14 @@ std::pair<std::pair<Installation, Installation>, float> closest(std::vector<Inst
 int main() {
     // Leer el número de instalaciones
     int n;
+    clock_t start_time = clock();
     std::cin >> n;
 
     std::vector<Installation> installations(n);
 
     // Leer los datos de las instalaciones
-    for (int i = 0; i < n; ++i) {
-        std::cin >> installations[i].name >> installations[i].x >> installations[i].y;
-    }
+    for (int i = 0; i < n; ++i) 
+        std::cin >> installations[i].name >> installations[i].x >> installations[i].y; 
 
     // Resolver el problema
     auto result = closest(installations);
@@ -131,6 +228,12 @@ int main() {
     std::cout << std::fixed << std::setprecision(2);
     std::cout << "Las instalaciones que representan el mayor peligro son " << pair.first.name
          << " y " << pair.second.name << " (distancia " << distance << ")" << std::endl;
+    clock_t end_time = clock();
+    
+    double execution_time = double(end_time - start_time) / CLOCKS_PER_SEC;
+
+    std::cout << "Total de operaciones básicas: " << count_op << std::endl;    
+    std::cout << "Tiempo de ejecucion: " << std::fixed << std::setprecision(6) << execution_time << " segundos" << std::endl;
 
     return 0;
 }
