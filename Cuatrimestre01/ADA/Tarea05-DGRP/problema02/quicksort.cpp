@@ -1,3 +1,5 @@
+//Autor: Diego Rodriguez
+//Fecha: 24/11/2024
 //Quick sort
 
 #include <iostream>

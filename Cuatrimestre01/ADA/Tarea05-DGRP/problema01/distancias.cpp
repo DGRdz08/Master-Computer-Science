@@ -1,13 +1,14 @@
+//Autor: Diego Rodriguez
+//Fecha: 25/11/2024
+//https://itzsyboo.medium.com/algorithms-studynote-4-divide-and-conquer-closest-pair-49ba679ce3c7
 #include <iostream>
 #include <cmath>
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <iomanip> 
 #include <float.h> 
 #include<ctime>
 
-//https://itzsyboo.medium.com/algorithms-studynote-4-divide-and-conquer-closest-pair-49ba679ce3c7
 int count_op = 0;
 
 void swap(int* a, int* b) {
