@@ -1,4 +1,4 @@
-Para las distancias
+Para las distancias.cpp
                               
 En linux o macOS                    
 g++ distancias.cpp -o prog

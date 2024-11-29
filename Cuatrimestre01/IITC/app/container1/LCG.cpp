@@ -26,7 +26,9 @@ int random (int m, int a, int c){
 #include <ctime>
 #include <cstdlib>
 #include <fstream>
+#include <sstream>
 #include <cmath>
+#include <iomanip>
 
 int LCG(int seed, int m, int a, int c) {
     return (a * seed + c) % m;
@@ -36,21 +38,27 @@ int main() {
     int L = 1, U = 1000;
     int m = 2147483647, a = 48271, c = 0;
     int seed = time(NULL) % m;
-    int n = 1000;
-
-    std::ofstream archivo("/shared_memory/datos.txt");
-    if (!archivo.is_open()) {
-        std::cerr << "Error al crear el archivo\n";
-        return 1;
-    }
-
-    archivo << n << std::endl;
-    for (int i = 0; i < n; i++) {
-        seed = std::abs(LCG(seed, m, a, c));
-        int randomNumber = L + seed % (U - L + 1);
-        archivo << randomNumber << std::endl;
-    }
+    int n = 1000000; // Número de elementos
     
-    archivo.close();
+    int numArchivos = 31;  // Número de archivos a generar
+
+    for (int fileIndex = 0; fileIndex < numArchivos; ++fileIndex) {
+        std::ostringstream fileName;
+        fileName << "/shared_memory/datos_" << fileIndex << ".txt";
+        std::ofstream archivo(fileName.str());
+        if (!archivo.is_open()) {
+            std::cerr << "Error al crear el archivo: " << fileName.str() << "\n";
+            return 1;
+        }
+
+        archivo << n << std::endl;
+        for (int i = 0; i < n; i++) {
+            seed = std::abs(LCG(seed, m, a, c));
+            int randomNumber = L + seed % (U - L + 1);
+            archivo << randomNumber << std::endl;
+        }
+        archivo.close();
+        std::cout << "Archivo generado: " << fileName.str() << "\n";
+    }
     return 0;
 }

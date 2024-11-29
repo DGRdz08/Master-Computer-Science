@@ -6,7 +6,6 @@ COPY LCG.cpp /app
 
 RUN g++ -o LCG LCG.cpp
 
-# Asegura permisos de escritura en el volumen compartido
 RUN mkdir -p /shared_memory && chmod 777 /shared_memory
 
 CMD ["./LCG"]
